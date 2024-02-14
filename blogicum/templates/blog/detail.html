@@ -1,9 +1,21 @@
-<!DOCTYPE html>
-<html lang="ru">
-  <head>
-    <title>detail</title>
-  </head>
-  <body>
-    <h1>detail html</h1>
-  </body>
-</html>
+{% extends "base.html" %}
+{% block content %}
+<div class="container py-5">
+  <article>
+    <ul>
+      <li>
+        Место: {{ post.location }}
+      </li>
+      <li>
+        Дата: {{ post.date }}
+      </li>
+      <li>
+        Категория: <a href="{% url 'blog:category_posts' post.category %}">{{ post.category }}</a>
+      </li>
+    </ul>
+    <p>
+      {{ post.text|linebreaksbr }}
+    </p>
+  </article>
+  </div>
+{% endblock  %}
