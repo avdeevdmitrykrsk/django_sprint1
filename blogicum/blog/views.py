@@ -44,9 +44,8 @@ posts: list = [
     },
 ]
 
-edited_post: dict = {
-    keys: values
-    for (keys, values) in zip((x['id'] for x in posts), (x for x in posts))
+edited_posts: dict = {
+    post['id']: post for post in posts
 }
 
 
@@ -58,11 +57,10 @@ def index(request):
 
 def post_detail(request, post_id):
     template_name = 'blog/detail.html'
-    if post_id >= len(posts):
-        raise Http404
-    else:
-        context = {'post': edited_post[post_id]}
-        return render(request, template_name, context)
+    if post_id not in edited_posts:
+        raise Http404('Страница не найдена')
+    context = {'post': edited_posts[post_id]}
+    return render(request, template_name, context)
 
 
 def category_posts(request, category_slug):
