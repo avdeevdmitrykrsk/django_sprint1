@@ -1,6 +1,7 @@
+from django.http import Http404
 from django.shortcuts import render
 
-posts = [
+posts: list = [
     {
         'id': 0,
         'location': 'Остров отчаянья',
@@ -43,6 +44,11 @@ posts = [
     },
 ]
 
+edited_post: dict = {
+    keys: values
+    for (keys, values) in zip((x['id'] for x in posts), (x for x in posts))
+}
+
 
 def index(request):
     template_name = 'blog/index.html'
@@ -50,10 +56,13 @@ def index(request):
     return render(request, template_name, context)
 
 
-def post_detail(request, id):
+def post_detail(request, post_id):
     template_name = 'blog/detail.html'
-    context = {'post': posts[id]}
-    return render(request, template_name, context)
+    if post_id >= len(posts):
+        raise Http404
+    else:
+        context = {'post': edited_post[post_id]}
+        return render(request, template_name, context)
 
 
 def category_posts(request, category_slug):
